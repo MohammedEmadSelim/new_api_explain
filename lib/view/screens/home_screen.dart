@@ -1,8 +1,7 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_api_explain/view/screens/search_screen.dart';
+import 'package:new_api_explain/view_model/search_cubit/search_cubit.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -41,37 +40,35 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           children: [
             TextFormField(
               readOnly: true,
-              onTap: (){
+              onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SearchScreen(),)
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => SearchCubit(),
+                      child: SearchScreen(),
+                    ),
+                  ),
                 );
               },
-              style: TextStyle(
-                  color: Colors.white
-              ),
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintStyle: TextStyle(
-                    color: Colors.white
-                ),
+                hintStyle: TextStyle(color: Colors.white),
                 hintText: "Search",
                 fillColor: Color(0xff242A32),
-                filled: true
-                ,
+                filled: true,
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16)
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                enabledBorder:  OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16)
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-
-
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -83,4 +80,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-

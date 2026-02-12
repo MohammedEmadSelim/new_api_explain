@@ -1,8 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:new_api_explain/view_model/search_cubit/search_cubit.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  SearchScreen({super.key});
+
+  bool showEmptyCase = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,7 @@ class SearchScreen extends StatelessWidget {
           TextFormField(
             onChanged: (value) {
               // api call
-              search(value);
+              context.read<SearchCubit>().search(value);
             },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -41,26 +46,10 @@ class SearchScreen extends StatelessWidget {
               ),
             ),
           ),
+          //handle case loading , case success , case failure
+          Lottie.asset('assets/animations/No Item In Box.json'),
         ],
       ),
     );
-  }
-
-  Future<void> search(String keyword) async {
-    var dio = Dio();
-    try {
-      var  res = await dio.get('https://api.themoviedb.org/3/search/movie?query=$keyword&include_adult=false&language=en-US&page=1',
-        options: Options(
-            headers: {
-              "Authorization":"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYmYwNzRjYzk3MzE0YmRiMWZmM2VlMmQ3NWUwNWY0ZiIsIm5iZiI6MTc2MTM5NzAxOS4xMDgsInN1YiI6IjY4ZmNjOTFiYzQzZDA1OTllMjkzODUwNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lzdT9GXoMtzophhJo7yb5wZ0MviXwdxUh7Lo1kVT1N4",
-              "accept":"application/json"
-            }
-        ),);
-
-      print("statusCode is  ===>${res.statusCode}");
-      print("data is  ===>${res.data}");
-    } catch (e) {
-      print("the error is $e");
-    }
   }
 }
