@@ -10,4 +10,11 @@ final class SearchSuccess extends SearchState {
 
   SearchSuccess(this.searchResponseModel);
 }
+final class SearchFailure extends SearchState {
+  final String message;
+
+  SearchFailure(this.message);
+}
+
+
 

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -47,7 +48,102 @@ class SearchScreen extends StatelessWidget {
             ),
           ),
           //handle case loading , case success , case failure
-          Lottie.asset('assets/animations/No Item In Box.json'),
+          BlocBuilder<SearchCubit, SearchState>(
+            builder: (context, state) {
+              print(state);
+              if (state is SearchLoading) {
+                return CupertinoActivityIndicator();
+              }
+              if (state is SearchSuccess) {
+                if(state.searchResponseModel.results.isEmpty){
+                  return Lottie.asset('assets/animations/No Item In Box.json');
+
+                }
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: state.searchResponseModel.results.length,
+                      itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          Image.network(
+                            "https://image.tmdb.org/t/p/w500/${state.searchResponseModel.results.first.posterPath}",
+                            height: 300,
+                            width: 250,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                state.searchResponseModel.results.first.title,
+                                style: TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.attractions_sharp,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                  Text(
+                                    state.searchResponseModel.results.first.adult
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.calendar_today_outlined,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                  Text(
+                                    state.searchResponseModel.results.first.title,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                  
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.timelapse,
+                                    color: Colors.white,
+                                    size: 21,
+                                  ),
+                                  Text(
+                                    state.searchResponseModel.results.first.title,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                      }),
+                );
+              }
+
+              return Lottie.asset('assets/animations/No Item In Box.json');
+            },
+          ),
         ],
       ),
     );
