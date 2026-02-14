@@ -55,41 +55,71 @@ class SearchScreen extends StatelessWidget {
                 return CupertinoActivityIndicator();
               }
               if (state is SearchSuccess) {
-                if(state.searchResponseModel.results.isEmpty){
+                if (state.searchResponseModel.results.isEmpty) {
                   return Lottie.asset('assets/animations/No Item In Box.json');
-
                 }
                 return Expanded(
                   child: ListView.builder(
                     itemCount: state.searchResponseModel.results.length,
-                      itemBuilder: (context, index) {
+                    itemBuilder: (context, index) {
+                      var movie = state.searchResponseModel.results[index];
                       return Row(
                         children: [
-                          Image.network(
-                            "https://image.tmdb.org/t/p/w500/${state.searchResponseModel.results.first.posterPath}",
-                            height: 300,
-                            width: 250,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w500/${movie.posterPath}",
+                              height: 200,
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
                           ),
+                          SizedBox(width: 25),
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                state.searchResponseModel.results.first.title,
-                                style: TextStyle(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                              SizedBox(
+                                width:211,
+                                child: Text(
+                                  movie.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
                                 ),
+                              ),
+                              SizedBox(height: 21),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star_border,
+                                    color: Colors.orange,
+                                    size: 21,
+                                  ),
+                                  SizedBox(width: 12,),
+
+                                  Text(
+                                    movie.voteAverage.toString(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                ],
                               ),
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.attractions_sharp,
+                                    Icons.local_attraction_outlined,
                                     color: Colors.white,
                                     size: 21,
                                   ),
+                                  SizedBox(width: 12,),
                                   Text(
-                                    state.searchResponseModel.results.first.adult
-                                        .toString(),
+                                    'Action',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
@@ -105,8 +135,10 @@ class SearchScreen extends StatelessWidget {
                                     color: Colors.white,
                                     size: 21,
                                   ),
+                                  SizedBox(width: 12,),
+
                                   Text(
-                                    state.searchResponseModel.results.first.title,
+                                    movie.releaseDate.substring(0,4),
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
@@ -115,7 +147,7 @@ class SearchScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                  
+
                               Row(
                                 children: [
                                   Icon(
@@ -123,8 +155,10 @@ class SearchScreen extends StatelessWidget {
                                     color: Colors.white,
                                     size: 21,
                                   ),
+                                  SizedBox(width: 12,),
+                                  
                                   Text(
-                                    state.searchResponseModel.results.first.title,
+                                    movie.voteCount.toString(),
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
@@ -137,7 +171,8 @@ class SearchScreen extends StatelessWidget {
                           ),
                         ],
                       );
-                      }),
+                    },
+                  ),
                 );
               }
 
